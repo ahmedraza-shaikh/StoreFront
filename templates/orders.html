@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Orders - StoreFront
+{% endblock %}
+
+{% block content %}
+
+<h1>All Orders</h1>
+
+{% if orders %}
+
+    {% for order in orders %}
+
+        <div class="product-card">
+
+            <h3>Order #{{ order.id }}</h3>
+
+            <p>
+                <strong>Customer:</strong>
+                {{ order.customer.name }}
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                {{ order.customer.email }}
+            </p>
+
+            <p>
+                <strong>Product:</strong>
+                {{ order.product.name }}
+            </p>
+
+            <p>
+                <strong>Quantity:</strong>
+                {{ order.quantity }}
+            </p>
+
+            <p>
+                <strong>Total:</strong>
+                {{ order.total_price | currency }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+            
+                {% if current_user.is_authenticated and current_user.is_admin %}
+                <form method="POST"
+                      action="{{ url_for('admin.update_order_status', id=order.id) }}"
+                      style="display:inline-block; margin-left:10px;">
+            
+                    <select name="status">
+            
+                        <option value="Pending"
+                            {% if order.status == 'Pending' %}selected{% endif %}>
+                            Pending
+                        </option>
+            
+                        <option value="Processing"
+                            {% if order.status == 'Processing' %}selected{% endif %}>
+                            Processing
+                        </option>
+            
+                        <option value="Shipped"
+                            {% if order.status == 'Shipped' %}selected{% endif %}>
+                            Shipped
+                        </option>
+            
+                        <option value="Delivered"
+                            {% if order.status == 'Delivered' %}selected{% endif %}>
+                            Delivered
+                        </option>
+            
+                        <option value="Cancelled"
+                            {% if order.status == 'Cancelled' %}selected{% endif %}>
+                            Cancelled
+                        </option>
+            
+                    </select>
+            
+                    <button type="submit" class="btn edit">
+                        Update
+                    </button>
+            
+                </form>
+                {% else %}
+                    {{ order.status }}
+                {% endif %}
+            </p>
+            <p>
+                <strong>Date:</strong>
+                {{ order.created_at.strftime('%d-%m-%Y') }}
+            </p>
+
+            {% if order.notes %}
+                <p>
+                    <strong>Notes:</strong>
+                    {{ order.notes }}
+                </p>
+            {% endif %}
+
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No orders found.</p>
+
+{% endif %}
+<div class="pagination">
+
+    {% if pagination.has_prev %}
+
+        <a href="{{ url_for('orders.orders',
+                            page=pagination.prev_num) }}">
+            Previous
+        </a>
+
+    {% endif %}
+
+    <span>
+        Page {{ pagination.page }}
+        of {{ pagination.pages }}
+    </span>
+
+    {% if pagination.has_next %}
+
+        <a href="{{ url_for('orders.orders',
+                            page=pagination.next_num) }}">
+            Next
+        </a>
+
+    {% endif %}
+
+</div>
+{% endblock %}

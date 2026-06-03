@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="page-title">
+    Admin Dashboard
+</h1>
+
+<div class="dashboard-grid">
+
+    <div class="product-card stat-card">
+        <h3>Total Products</h3>
+        <p>{{ total_products }}</p>
+    </div>
+
+    <div class="product-card stat-card">
+        <h3>Total Orders</h3>
+        <p>{{ total_orders }}</p>
+    </div>
+
+    <div class="product-card stat-card">
+        <h3>Total Users</h3>
+        <p>{{ total_users }}</p>
+    </div>
+
+    <div class="product-card stat-card">
+        <h3>Total Revenue</h3>
+        <p>{{ revenue | currency }}</p>
+    </div>
+
+</div>
+
+<div class="admin-dashboard-links">
+
+    <a href="{{ url_for('admin.new_product') }}" class="btn edit">
+        Add Product
+    </a>
+
+    <a href="{{ url_for('admin.admin_products') }}" class="btn edit">
+        Manage Products
+    </a>
+
+    <a href="{{ url_for('orders.orders') }}" class="btn edit">
+        Orders
+    </a>
+
+    <a href="{{ url_for('orders.home') }}" class="btn-cart">
+        View Store
+    </a>
+
+    <a href="{{ url_for('admin.contact_messages') }}" class="btn messages">
+        Contact Messages
+    </a>
+
+</div>
+
+{% endblock %}

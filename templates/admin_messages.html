@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Contact Messages</h1>
+
+{% for msg in messages %}
+
+<div class="product-card">
+
+    <h3>{{ msg.name }} ({{ msg.email }})</h3>
+
+    <p><b>Subject:</b> {{ msg.subject }}</p>
+    <p><b>Phone:</b> {{ msg.phone }}</p>
+
+    <p>{{ msg.message }}</p>
+
+    <small>{{ msg.created_at }}</small>
+
+</div>
+
+{% else %}
+
+<p>No messages yet.</p>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Contact Us</h1>
+
+<form method="POST">
+
+    {{ form.hidden_tag() }}
+
+    <p>
+        {{ form.name.label }} <br>
+        {{ form.name(size=40) }}
+
+        {% for error in form.name.errors %}
+            <span style="color:red">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.email.label }} <br>
+        {{ form.email(size=40) }}
+
+        {% for error in form.email.errors %}
+            <span style="color:red">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.phone.label }} <br>
+        {{ form.phone(size=20) }}
+
+        {% for error in form.phone.errors %}
+            <span style="color:red">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.subject.label }} <br>
+        {{ form.subject(id="subject") }}
+    </p>
+
+    <!-- Hidden Priority Dropdown -->
+    <div id="priority-box" style="display:none;">
+
+        <label>Priority</label>
+
+        <select id="priority-select">
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+        </select>
+
+    </div>
+
+    <p>
+        {{ form.message.label }} <br>
+        {{ form.message(rows=6, cols=40) }}
+
+        {% for error in form.message.errors %}
+            <span style="color:red">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.submit() }}
+    </p>
+
+</form>
+
+<script>
+
+    const subjectField = document.getElementById("subject");
+    const priorityBox = document.getElementById("priority-box");
+
+    subjectField.addEventListener("change", function() {
+
+        if (this.value === "Order Issue") {
+            priorityBox.style.display = "block";
+        }
+        else {
+            priorityBox.style.display = "none";
+        }
+
+    });
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}StoreFront{% endblock %}
+    </title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <!-- LEFT SIDE LINKS -->
+    <div class="nav-left">
+        <a href="{{ url_for('orders.home') }}">StoreFront</a>
+        <a href="{{ url_for('orders.products') }}">Products</a>
+        <a href="{{ url_for('orders.about') }}">About</a>
+        <a href="{{ url_for('orders.contact') }}">Contact</a>
+        <a href="{{ url_for('orders.place_order') }}">Place Order</a>
+        <a href="{{ url_for('orders.orders') }}">Orders</a>
+
+        <!-- ADMIN ONLY -->
+        {% if current_user.is_authenticated and current_user.is_admin %}
+            <a href="{{ url_for('admin.admin_dashboard') }}" class="admin-btn">
+                Admin Panel
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- RIGHT SIDE USER INFO -->
+    <div class="nav-right">
+
+        {% if current_user.is_authenticated %}
+
+            <span class="user-text">
+                Hello, {{ current_user.name }}
+            </span>
+
+            <a href="{{ url_for('auth.logout') }}" class="logout-btn">
+                Logout
+            </a>
+
+        {% else %}
+
+            <a href="{{ url_for('auth.login') }}" class="login-btn">
+                Login
+            </a>
+
+        {% endif %}
+
+        <a class="nav-link" href="{{ url_for('cart.view_cart') }}">
+        🛒 Cart
+            {% if current_user.is_authenticated %}
+            {% set count = current_user.cart_items | length %}
+                {% if count > 0 %}
+                <span class="badge bg-danger">{{ count }}</span>
+                {% endif %}
+            {% endif %}
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- FLASH MESSAGES -->
+<main>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+</main>
+
+<footer>
+    <p>&copy; 2024 StoreFront</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+
+<div class="product-card">
+
+    <h1>{{ product.name }}</h1>
+
+    <h3>₹{{ product.price }}</h3>
+
+    <p><strong>Category:</strong> {{ product.category }}</p>
+
+    <p>{{ product.description }}</p>
+
+    {% if product.in_stock %}
+        <span class="badge green">In Stock</span>
+    {% else %}
+        <span class="badge red">Out of Stock</span>
+    {% endif %}
+
+    <br><br>
+
+    <a href="{{ url_for('cart.add_to_cart', product_id=product.id) }}"
+       class="btn-cart">
+       Add To Cart
+    </a>
+
+</div>
+
+{% endblock %}

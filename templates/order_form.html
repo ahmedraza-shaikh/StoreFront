@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Place Order</h1>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="form_group">
+        {{ form.customer_name.label }}
+        {{ form.customer_name(class='form-control') }}
+        {% for error in form.customer_name.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="form_group">
+        {{ form.customer_email.label }}
+        {{ form.customer_email(class='form-control') }}
+        {% for error in form.customer_email.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="form_group">
+        {{ form.product_id.label }}
+        {{ form.product_id(class='form-control') }}
+        {% for error in form.product_id.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="form_group">
+        {{ form.quantity.label }}
+        {{ form.quantity(class='form-control') }}
+        {% for error in form.quantity.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
+    </div>
+
+    <div>
+        {{ form.submit(class='btn btn-primary') }}
+    </div>
+
+</form>
+
+{% endblock %}

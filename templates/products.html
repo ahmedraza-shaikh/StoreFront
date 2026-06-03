@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Products ({{ products | length }} items)</h1>
+
+<div class="filters">
+    <a href="{{ url_for('orders.products') }}"
+       class="{% if not active_category %}active{% endif %}">
+       All
+    </a>
+
+    {% for cat in categories %}
+        <a href="{{ url_for('orders.products', category=cat) }}"
+           class="{% if active_category == cat %}active{% endif %}">
+           {{ cat }}
+        </a>
+    {% endfor %}
+</div>
+
+{% for product in products %}
+    <div class="product-card">
+
+        <h3>
+            <a href="{{ url_for('orders.product', product_id=product.id) }}">
+                {{ product.name }}
+            </a>
+        </h3>
+
+            <p> ₹{{ product.price }}</p>
+            <p> {{ product.category }}</p>
+        {% if product.in_stock %}
+            <span class="badge green">In Stock</span>
+        {% else %}
+            <span class="badge red">Out Of Stock</span>
+        {% endif %}
+
+        <!-- ADD TO CART -->
+        {% if current_user.is_authenticated %}
+            {% if product.in_stock %}
+                <form method="POST"
+                      action="{{ url_for('cart.add_to_cart', product_id=product.id) }}">
+                      <button type="submit" class="btn-cart">
+                        🛒 Add To Cart
+                    </button>
+                </form>
+            {% else %}
+                <button class="btn-cart disabled" disabled>
+                    Out of Stock
+                </button>
+            {% endif %}
+        {% else %}
+            <a href="{{ url_for('auth.login') }}" class="btn-cart">
+                Login to Add
+            </a>
+        {% endif %}
+
+        <!-- ADMIN CONTROLS -->
+        {% if current_user.is_authenticated and current_user.is_admin %}
+            <div class="admin-actions">
+                <a href="{{ url_for('admin.edit_product', id=product.id) }}"
+                class="btn edit">
+                              ✏ Edit
+                </a>
+
+                    <button type="submit" class="btn delete">
+                         🗑 Delete
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+
+    </div>
+{% endfor %}
+
+{% endblock %}

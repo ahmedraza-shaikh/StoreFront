@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>🛒 Your Cart</h2>
+
+  {% if items %}
+  <table class="table table-bordered mt-3">
+    <thead class="table-dark">
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>{{ item.product.name }}</td>
+        <td>₹{{ item.product.price }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('cart.update_quantity', item_id=item.id, action='decrease') }}" style="display:inline">
+            <button class="qty-btn">−</button>
+          </form>
+          {{ item.quantity }}
+          <form method="POST" action="{{ url_for('cart.update_quantity', item_id=item.id, action='increase') }}" style="display:inline">
+            <button class="qty-btn">+</button>
+          </form>
+        </td>
+        <td>₹{{ item.subtotal() }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('cart.remove_from_cart', item_id=item.id) }}">
+            <button class="btn btn-sm btn-danger">Remove</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h4 class="text-end">Total: ₹{{ total }}</h4>
+
+  <form method="POST" action="{{ url_for('cart.checkout') }}" class="text-end">
+    <button class="btn btn-success btn-lg">Place Order</button>
+  </form>
+
+  {% else %}
+    <p class="mt-4 text-muted">Your cart is empty. <a href="{{ url_for('orders.products') }}">Browse products →</a></p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block title %}
+StoreFront - Home
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        {% if username %}
+            <h1>Welcome Back, {{ username }}!</h1>
+        {% else %}
+            <h1>Welcome To StoreFront</h1>
+        {% endif %}
+
+        <p>
+            A complete Flask-powered Store Management System
+            for products, customers and orders.
+        </p>
+
+        <a href="{{ url_for('orders.products') }}" class="hero-btn">
+            Browse Products
+        </a>
+
+    </div>
+
+    <div class="hero-image">
+        <img src="{{ url_for('static', filename='img.jpg') }}"
+             alt="StoreFront">
+    </div>
+
+</section>
+
+<section class="stats">
+
+    <div class="stat-card">
+        <h2>{{ product_count }}</h2>
+        <p>Products</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>{{ order_count }}</h2>
+        <p>Orders</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>{{ customer_count }}</h2>
+        <p>Customers</p>
+    </div>
+
+</section>
+
+<section class="features">
+
+    <h2>Why Choose StoreFront?</h2>
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+            <h3>Product Management</h3>
+            <p>Add, edit and manage inventory efficiently.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Order Tracking</h3>
+            <p>Monitor customer orders in real time.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Secure Authentication</h3>
+            <p>Registration, login and password reset support.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Admin Dashboard</h3>
+            <p>Powerful management tools for administrators.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>REST API</h3>
+            <p>JSON API endpoints for future integrations.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Customer Support</h3>
+            <p>Integrated contact and inquiry system.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="featured-products">
+
+    <h2>Featured Products</h2>
+
+    <div class="product-grid">
+
+        {% for product in featured_products %}
+
+        <div class="product-card">
+
+            <h3>{{ product.name }}</h3>
+
+            <p>{{ product.category }}</p>
+
+            <strong>{{ product.price|currency }}</strong>
+
+            <br><br>
+
+            <a href="{{ url_for('orders.product', product_id=product.id) }}">
+                View Product
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<section class="cta">
+
+    <h2>Ready To Start Shopping?</h2>
+
+    <p>
+        Explore products and place orders instantly.
+    </p>
+
+    <a href="{{ url_for('orders.products') }}" class="hero-btn">
+        Browse Products
+    </a>
+
+</section>
+
+{% endblock %}
